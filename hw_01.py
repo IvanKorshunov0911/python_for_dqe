@@ -27,14 +27,14 @@ odd_list = []
 # define even_list as an empty list
 even_list = []
 # iterate through rand_list elements
-for i in range(len(rand_list)):
+for i in rand_list:
     # if list element has division to 2 addition 1
-    if rand_list[i] % 2 == 1:
+    if i % 2 == 1:
         # add this element to odd_list
-        odd_list.append(rand_list[i])
+        odd_list.append(i)
     else:
         # else add to even_list
-        even_list.append(rand_list[i])
+        even_list.append(i)
 
 # try to calculate even_list_average
 try:
