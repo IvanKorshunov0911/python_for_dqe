@@ -1,10 +1,12 @@
+import os
+import hw_03_func
 from datetime import datetime
 from random import randint
 
 
 class Publication:
-    def __init__(self):
-        self.text = input("Enter text:")
+    def __init__(self, text):
+        self.text = text
         self.publication_text = ''
 
     def preparation(self):
@@ -16,19 +18,21 @@ class Publication:
 
 
 class MagazineHandler:
-    def __init__(self):
-        self.publication_type = input("Enter publication type:\n"
-                                      "1 for News\n"
-                                      "2 for Private Ad\n"
-                                      "3 for Joke\n")
+    def __init__(self, publication_type, text, attribute):
+        self.publication_type = publication_type
+        self.text = text
+        self.attribute = attribute
+        self.publication_producer()
 
     def publication_producer(self):
         if self.publication_type == '1':
-            publication = News()
+            publication = News(self.text, self.attribute)
         elif self.publication_type == '2':
-            publication = PrivateAd()
+            publication = PrivateAd(self.text, self.attribute)
         elif self.publication_type == '3':
-            publication = Joke()
+            publication = Joke(self.text)
+        elif self.publication_type == '4':
+            publication = FileProcessor()
         else:
             print("Publication type is not correct. Please restart.")
             exit()
@@ -37,9 +41,9 @@ class MagazineHandler:
 
 
 class News(Publication):
-    def __init__(self):
-        super().__init__()
-        self.location = input("Enter location:")
+    def __init__(self, text, attribute):
+        super().__init__(text)
+        self.location = attribute
         self.current_datetime = None
 
     def current_datetime_calculation(self):
@@ -54,9 +58,9 @@ class News(Publication):
 
 
 class PrivateAd(Publication):
-    def __init__(self):
-        super().__init__()
-        self.actual_until = input("Actual until (enter date in dd/mm/yyyy format):")
+    def __init__(self, text, attribute):
+        super().__init__(text)
+        self.actual_until = attribute
         self.days_left = None
 
     def days_left_calculation(self):
@@ -78,5 +82,54 @@ class Joke(Publication):
                                 f'-----------------------------\n'
 
 
-magazine_handler = MagazineHandler()
-magazine_handler.publication_producer()
+class FileProcessor(Publication):
+    def __init__(self):
+        self.directory = input("Enter file directory:")
+        self.default_directory = os.getcwd() + '/test_publication_input.txt'
+        if self.directory == "":
+            self.directory = self.default_directory
+
+    def preparation(self):
+        with open(self.directory, 'r') as f:
+            raw_publications = f.read()
+            splitted_publications = raw_publications.split("\n")
+            for i in range(0, len(splitted_publications), 3):
+                handler = MagazineHandler(splitted_publications[i],
+                                          hw_03_func.letter_case_normalization(splitted_publications[i + 1]),
+                                          hw_03_func.letter_case_normalization(splitted_publications[i + 2]))
+        os.remove(self.directory)
+
+    def publish(self):
+        pass
+
+
+class UserInputs:
+    def __init__(self):
+        self.publication_type = input("Enter publication type:\n"
+                                      "1 for News\n"
+                                      "2 for Private Ad\n"
+                                      "3 for Joke\n"
+                                      "4 if you want to process the file\n")
+        if self.publication_type == '1':
+            self.text = input("Enter text:")
+            self.attribute = input("Enter location:")
+        elif self.publication_type == '2':
+            self.text = input("Enter text:")
+            self.attribute = input("Actual until (enter date in dd/mm/yyyy format):")
+        elif self.publication_type == '3':
+            self.text = input("Enter text:")
+            self.attribute = ""
+        elif self.publication_type == '4':
+            self.text = ""
+            self.attribute = ""
+        else:
+            print("Publication type is not correct. Please restart.")
+            exit()
+
+    def get_user_input(self):
+        return [self.publication_type, self.text, self.attribute]
+
+
+user_inputs = UserInputs()
+user_inputs_list = user_inputs.get_user_input()
+magazine_handler = MagazineHandler(user_inputs_list[0], user_inputs_list[1], user_inputs_list[2])

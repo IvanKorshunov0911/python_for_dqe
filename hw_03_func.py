@@ -31,21 +31,22 @@ def count_ws_in_string(text):
     return number_of_ws
 
 
-input_text = """homEwork:
-	tHis iz your homeWork, copy these Text to variable. 
+if __name__ == "__main__":
+    input_text = """homEwork:
+        tHis iz your homeWork, copy these Text to variable. 
+    
+        You NEED TO normalize it fROM letter CASEs point oF View. also, create one MORE senTENCE witH LAST WoRDS of each existING SENtence and add it to the END OF this Paragraph.
+    
+        it iZ misspeLLing here. fix“iZ” with correct “is”, but ONLY when it Iz a mistAKE. 
+    
+        last iz TO calculate nuMber OF Whitespace characteRS in this Text. caREFULL, not only Spaces, but ALL whitespaces. I got 87.
+    """
 
-	You NEED TO normalize it fROM letter CASEs point oF View. also, create one MORE senTENCE witH LAST WoRDS of each existING SENtence and add it to the END OF this Paragraph.
 
-	it iZ misspeLLing here. fix“iZ” with correct “is”, but ONLY when it Iz a mistAKE. 
+    insert_sentence_before = """
+    
+            It iz misspelling here."""
 
-	last iz TO calculate nuMber OF Whitespace characteRS in this Text. caREFULL, not only Spaces, but ALL whitespaces. I got 87.
-"""
-
-
-insert_sentence_before = """
-
-        It iz misspelling here."""
-
-# print results
-print(fix_typo_iz(adding_sentence_from_last_words_in_paragraph(letter_case_normalization(input_text), insert_sentence_before)))
-print(count_ws_in_string(input_text))
+    # print results
+    print(fix_typo_iz(adding_sentence_from_last_words_in_paragraph(letter_case_normalization(input_text), insert_sentence_before)))
+    print(count_ws_in_string(input_text))
