@@ -1,5 +1,6 @@
 import os
 import hw_03_func
+import hw_07
 from datetime import datetime
 from random import randint
 
@@ -130,6 +131,8 @@ class UserInputs:
         return [self.publication_type, self.text, self.attribute]
 
 
-user_inputs = UserInputs()
-user_inputs_list = user_inputs.get_user_input()
-magazine_handler = MagazineHandler(user_inputs_list[0], user_inputs_list[1], user_inputs_list[2])
+if __name__ == "__main__":
+    user_inputs = UserInputs()
+    user_inputs_list = user_inputs.get_user_input()
+    magazine_handler = MagazineHandler(user_inputs_list[0], user_inputs_list[1], user_inputs_list[2])
+    hw_07.create_statistics('magazine.txt')
