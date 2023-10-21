@@ -68,3 +68,33 @@ Joke of the day -------------
 neword
 Funny meter - 6 / 10
 -----------------------------
+
+News ------------------------
+abracadabra from JSON
+London, 22/10/2023 01:48
+-----------------------------
+
+Private Ad ------------------
+Just, do it from JSON
+Actual until: 22/12/2222, 72743 days left
+-----------------------------
+
+Joke of the day -------------
+JSON means Jokes SON
+Funny meter - 4 / 10
+-----------------------------
+
+News ------------------------
+abracadabra from JSON
+London, 22/10/2023 02:16
+-----------------------------
+
+Private Ad ------------------
+Just, do it from JSON
+Actual until: 22/12/2222, 72743 days left
+-----------------------------
+
+Joke of the day -------------
+JSON means Jokes SON
+Funny meter - 0 / 10
+-----------------------------

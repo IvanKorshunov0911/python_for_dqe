@@ -1,0 +1,9 @@
+[{"type" : 1,
+"text" :  "abracadabra from JSON",
+"attribute": "London"},
+  {"type" : 2,
+"text" :  "Just, do it from JSON",
+"attribute": "22/12/2222"},
+  {"type" : 3,
+"text" :  "JSON means Jokes SON",
+  "attribute": ""}]

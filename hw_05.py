@@ -1,4 +1,5 @@
 import os
+import json
 import hw_03_func
 import hw_07
 from datetime import datetime
@@ -33,7 +34,9 @@ class MagazineHandler:
         elif self.publication_type == '3':
             publication = Joke(self.text)
         elif self.publication_type == '4':
-            publication = FileProcessor()
+            publication = FileProcessorTxt()
+        elif self.publication_type == '5':
+            publication = FileProcessorJson()
         else:
             print("Publication type is not correct. Please restart.")
             exit()
@@ -83,22 +86,50 @@ class Joke(Publication):
                                 f'-----------------------------\n'
 
 
-class FileProcessor(Publication):
+class FileProcessorTxt(Publication):
     def __init__(self):
-        self.directory = input("Enter file directory:")
+        self.directory = input("Enter file path:")
         self.default_directory = os.getcwd() + '/test_publication_input.txt'
         if self.directory == "":
             self.directory = self.default_directory
 
     def preparation(self):
-        with open(self.directory, 'r') as f:
-            raw_publications = f.read()
-            splitted_publications = raw_publications.split("\n")
-            for i in range(0, len(splitted_publications), 3):
-                handler = MagazineHandler(splitted_publications[i],
-                                          hw_03_func.letter_case_normalization(splitted_publications[i + 1]),
-                                          hw_03_func.letter_case_normalization(splitted_publications[i + 2]))
-        os.remove(self.directory)
+        try:
+            with open(self.directory, 'r') as f:
+                raw_publications = f.read()
+                splitted_publications = raw_publications.split("\n")
+                for i in range(0, len(splitted_publications), 3):
+                    handler = MagazineHandler(splitted_publications[i],
+                                              hw_03_func.letter_case_normalization(splitted_publications[i + 1]),
+                                              hw_03_func.letter_case_normalization(splitted_publications[i + 2]))
+            os.remove(self.directory)
+        except FileNotFoundError:
+            print("There is no TXT file in directory")
+
+    def publish(self):
+        pass
+
+
+class FileProcessorJson(Publication):
+    def __init__(self):
+        self.directory = input("Enter file path:")
+        self.default_directory = os.getcwd() + '/test_publication_input.json'
+        if self.directory == "":
+            self.directory = self.default_directory
+
+    def preparation(self):
+        try:
+            with open(self.directory, 'r') as f:
+                raw_publications = json.load(f)
+                for dictionary in raw_publications:
+                    handler = MagazineHandler(str(dictionary['type']),
+                                              str(dictionary['text']),
+                                              str(dictionary['attribute']))
+            os.remove(self.directory)
+        except FileNotFoundError:
+            print("There is no JSON file in directory")
+        except json.decoder.JSONDecodeError:
+            print("JSON structure is not correct")
 
     def publish(self):
         pass
@@ -110,7 +141,8 @@ class UserInputs:
                                       "1 for News\n"
                                       "2 for Private Ad\n"
                                       "3 for Joke\n"
-                                      "4 if you want to process the file\n")
+                                      "4 if you want to process txt file\n"
+                                      "5 if you want to process json file\n")
         if self.publication_type == '1':
             self.text = input("Enter text:")
             self.attribute = input("Enter location:")
@@ -121,6 +153,9 @@ class UserInputs:
             self.text = input("Enter text:")
             self.attribute = ""
         elif self.publication_type == '4':
+            self.text = ""
+            self.attribute = ""
+        elif self.publication_type == '5':
             self.text = ""
             self.attribute = ""
         else:
