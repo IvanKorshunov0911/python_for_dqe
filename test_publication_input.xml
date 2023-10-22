@@ -1,0 +1,17 @@
+<root>
+  <row>
+    <type>1</type>
+    <text>abracadabra from XML</text>
+    <attribute>London</attribute>
+  </row>
+  <row>
+    <type>2</type>
+    <text>Just, do it from XML</text>
+    <attribute>22/12/2222</attribute>
+  </row>
+  <row>
+    <type>3</type>
+    <text>XML means X Movies Lovers</text>
+    <attribute></attribute>
+  </row>
+</root>

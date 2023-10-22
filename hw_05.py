@@ -1,5 +1,6 @@
 import os
 import json
+import xml.etree.ElementTree as ET
 import hw_03_func
 import hw_07
 from datetime import datetime
@@ -37,6 +38,8 @@ class MagazineHandler:
             publication = FileProcessorTxt()
         elif self.publication_type == '5':
             publication = FileProcessorJson()
+        elif self.publication_type == '6':
+            publication = FileProcessorXml()
         else:
             print("Publication type is not correct. Please restart.")
             exit()
@@ -105,6 +108,8 @@ class FileProcessorTxt(Publication):
             os.remove(self.directory)
         except FileNotFoundError:
             print("There is no TXT file in directory")
+        except IsADirectoryError:
+            print("Directory is not valid")
 
     def publish(self):
         pass
@@ -128,12 +133,40 @@ class FileProcessorJson(Publication):
             os.remove(self.directory)
         except FileNotFoundError:
             print("There is no JSON file in directory")
-        except json.decoder.JSONDecodeError:
+        except (json.decoder.JSONDecodeError, KeyError):
             print("JSON structure is not correct")
+        except IsADirectoryError:
+            print("Directory is not valid")
 
     def publish(self):
         pass
 
+
+class FileProcessorXml(Publication):
+    def __init__(self):
+        self.directory = input("Enter file path:")
+        self.default_directory = os.getcwd() + '/test_publication_input.xml'
+        if self.directory == "":
+            self.directory = self.default_directory
+
+    def preparation(self):
+        try:
+            tree = ET.parse(self.directory)
+            root = tree.getroot()
+            for row in root.findall('row'):
+                handler = MagazineHandler(row.find('type').text,
+                                          row.find('text').text,
+                                          row.find('attribute').text)
+            os.remove(self.directory)
+        except FileNotFoundError:
+            print("There is no XML file in directory")
+        except (ET.ParseError, AttributeError):
+            print("XML structure is not correct")
+        except IsADirectoryError:
+            print("Directory is not valid")
+
+    def publish(self):
+        pass
 
 class UserInputs:
     def __init__(self):
@@ -142,7 +175,8 @@ class UserInputs:
                                       "2 for Private Ad\n"
                                       "3 for Joke\n"
                                       "4 if you want to process txt file\n"
-                                      "5 if you want to process json file\n")
+                                      "5 if you want to process json file\n"
+                                      "6 if you want to process xml file\n")
         if self.publication_type == '1':
             self.text = input("Enter text:")
             self.attribute = input("Enter location:")
@@ -156,6 +190,9 @@ class UserInputs:
             self.text = ""
             self.attribute = ""
         elif self.publication_type == '5':
+            self.text = ""
+            self.attribute = ""
+        elif self.publication_type == '6':
             self.text = ""
             self.attribute = ""
         else:
